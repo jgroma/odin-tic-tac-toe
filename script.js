@@ -1,4 +1,3 @@
-//const gameContainer = document.getElementsByClassName(".game-container");
 const gameContainer = document.querySelector(".game-container")
 
 const gameBoard = (() => {
@@ -8,6 +7,91 @@ const gameBoard = (() => {
         ["", "", ""],
         ["", "", ""]
     ];
+
+
+    //if marks are the same in one of the winning combinations "you won"
+    const winConditions = (board) => {
+        if (board.includes("")) {
+            //do nothing
+            //console.log(board.includes())
+        } else {
+            //winnning horizontally
+            if (board[0][0] != "" && board[0][0] == board[0][1] && board[0][1] == board[0][2]) {
+                winningMark = board[0][0]
+                wonGame = true;
+                //console.log(wonGame);
+                //console.log(`The winning mark is ${winningMark}`);
+                alert(`${winningMark} won`)
+
+            } else if (board[1][0] != "" && board[1][0] == board[1][1] && board[1][1] == board[1][2]) {
+                winningMark = board[1][0]
+                wonGame = true;
+                alert(`${winningMark} won`)
+            } else if (board[2][0] != "" && board[2][0] == board[2][1] && board[2][1] == board[2][2]) {
+                winningMark = board[2][0]
+                wonGame = true;
+                alert(`${winningMark} won`)
+            //winning vertically
+            } else if (board[0][0] != "" && board[0][0] == board[1][0] && board[1][0] == board[2][0]) {
+                winningMark = board[0][0]
+                wonGame = true;
+                alert(`${winningMark} won`)
+            } else if (board[0][1] != "" && board[0][1] == board[1][1] && board[1][1] == board[2][1]) {
+                winningMark = board[0][1]
+                wonGame = true;
+                alert(`${winningMark} won`)
+            } else if (board[0][2] != "" && board[0][2] == board[1][2] && board[1][2] == board[2][2]) {
+                winningMark = board[0][2]
+                wonGame = true;
+                alert(`${winningMark} won`)
+            //winning diagonally
+            } else if (board[0][0] != "" && board[0][0] == board[1][1] && board[1][1] == board[2][2]) {
+                winningMark = board[0][0]
+                wonGame = true;
+                alert(`${winningMark} won`)
+            } else if (board[2][0] != "" && board[2][0] == board[1][1] && board[1][1] == board[0][2]) {
+                winningMark = board[2][0]
+                wonGame = true;
+                alert(`${winningMark} won`)
+            }
+        }
+    }
+
+    //winning horizontally
+    //[0][0],[0][1],[0][2]
+    //[1][0],[1][1],[1][2]
+    //[2][0],[2][1],[2][2]
+    //winning vertically
+    //[0][0],[1][0],[2][0]
+    //[0][1],[1][1],[2][1]
+    //[0][2],[1][2],[2][2]
+    //winning diagonally
+    //[0][0],[1][1],[2][2]
+    //[2][0],[1][1],[0][2]
+
+    const tieConditions = (board) => {
+
+            let tieArray = [];
+
+            for (let i = 0; i < board.length; i++) {
+                for (let j = 0; j < board[i].length; j++) {
+                    if (board[i][j] != "") {
+                        tieArray.push(board[i][j])
+                        //console.log(tieArray);
+                    } else {
+                        //do nothing
+                    }
+                }
+            }
+
+            if (tieArray.length === 9) {
+                isTie = true;
+                alert("it's a tie");
+            } else {
+                //do nothing
+            }
+    }
+
 
     const getBoard = () => board;
 
@@ -37,15 +121,14 @@ const gameBoard = (() => {
         }
     }
 
-    //const renderBoard = () => {
-    //    board.forEach((row, rowIndex))
-    //}
+
 
     return {
         renderBoard,
-        getBoard
+        getBoard,
+        winConditions,
+        tieConditions
     }
-    //console.table(board)
 })();
 
 
@@ -75,37 +158,32 @@ gameBoard.renderBoard()
    // }
 //];
 
-//console.log(playerOne)
 
 const gameController = (() => {
-    //const board = gameBoard;
-    //console.table(board.getBoard())
-    //const squares = board.getBoard
-
-    //function that lets players place marks on the board
-    //let testIndex = 22;
-
-    //getBoard;
-
-    //(cellIndex, player)
-
-    //const addMark = () => {
-
-        //for (let i = 0; i < board.length; i++) {
-        //    for (let j=0; j < board[i].length; j++) {
-        //        let squareAttribute = square.getAttribute("data-index-number");
-                //console.log(squareAttribute);
-        //        console.log("Hi")
-        //    }
-        //}
-
-        //squares.forEach(row => {
-        //    row.forEach(cell => console.log())
-        //})
-         
-    //}
+    
 
     const board = gameBoard.getBoard();
+
+//will be used to announce the winner
+    let wonGame = false;
+
+    let winningMark;
+
+    let isTie;
+
+    const checkWin = () => gameBoard.winConditions(board);
+
+    const checkTie = () => gameBoard.tieConditions(board);
+    
+    //WARNING
+    //accidentially created infinte loop by doing this...
+    //const checkTieConditions = () => gameBoard.tieConditions(board);
+    //const checkTie = () => {
+       // while (!wonGame) {
+      //      checkTieConditions();
+      //  }
+    //}
+
 
     //const players = [playerOne, playerTwo];
 
@@ -144,29 +222,38 @@ const gameController = (() => {
                 if (board[rowIndex][columnIndex] === '') {
                     //board[rowIndex][columnIndex] = playerOne.mark;
                     //square.textContent = playerOne.mark;
-                    board[rowIndex][columnIndex] === activePlayer.mark;
+                    board[rowIndex][columnIndex] = activePlayer.mark;
+                    //the issue that took me a long time to figure out is mistyping "==="
+                    //instead of "=" in the line above...
                     square.textContent = activePlayer.mark
-                    changeTurns()
+                    //for checking if the board array updates after each move
+                    let currentBoard = gameBoard.getBoard();
+                    //console.table(currentBoard)
+                    
+                    checkWin();
+                    changeTurns();
+
+                    //had to include '&& winningMark(...)' otherwise
+                    //checkTie would alert 'it's a tie' after checkWin in the rare case
+                    //where the last available button makes you win
+                    if(!wonGame && winningMark === "") {
+                        checkTie();
+                    }
+                    
                     square.disabled = true;
 
                 } else if (board[rowIndex][columnIndex] != '') {
                     //do nothing since square is taken
-                    //return;
-                    //square.textContent = board[i][j];
                 }
             });
         });
     };
 
+
+
     return {
         addMark
     }
-
-    //let testIndex = 22;
-
-    //et testSquare = document.getE
-    //let testAttribute = testSquare.getAttribute("data-index-number");
-    //console.log(testIndex == testAttribute);
 
 })();
 
