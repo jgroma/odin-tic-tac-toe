@@ -8,7 +8,6 @@ const gameBoard = (() => {
         ["", "", ""]
     ];
 
-
     //if marks are the same in one of the winning combinations "you won"
     const winConditions = (board) => {
         if (board.includes("")) {
@@ -77,7 +76,6 @@ const gameBoard = (() => {
                 for (let j = 0; j < board[i].length; j++) {
                     if (board[i][j] != "") {
                         tieArray.push(board[i][j])
-                        //console.log(tieArray);
                     } else {
                         //do nothing
                     }
@@ -90,6 +88,8 @@ const gameBoard = (() => {
             } else {
                 //do nothing
             }
+
+            
     }
 
 
@@ -103,17 +103,15 @@ const gameBoard = (() => {
                 let rowIndex = board.indexOf(board[i]);
                 let columnIndex = board.indexOf(board[j]);
                 let cellIndex = rowIndex.toString() + columnIndex.toString();
-                //console.log(board[i][j]);
+              
                 let square = document.createElement('button');
                 square.classList.add(`button${cellIndex}`);
                 square.setAttribute("data-index-number", `${cellIndex}`);
                 square.setAttribute("data-row", `${rowIndex}`);
                 square.setAttribute("data-column", `${columnIndex}`);
-                //gameContainer[0].appendChild(square);
+
                 gameContainer.appendChild(square)
                 square.textContent = board[i][j];
-                //console.log(board.indexOf(board[j]))
-                //console.log(board.indexOf(board[i]))
 
                 
                 
@@ -167,7 +165,7 @@ const gameController = (() => {
 //will be used to announce the winner
     let wonGame = false;
 
-    let winningMark;
+    let winningMark = "";
 
     let isTie;
 
@@ -175,15 +173,6 @@ const gameController = (() => {
 
     const checkTie = () => gameBoard.tieConditions(board);
     
-    //WARNING
-    //accidentially created infinte loop by doing this...
-    //const checkTieConditions = () => gameBoard.tieConditions(board);
-    //const checkTie = () => {
-       // while (!wonGame) {
-      //      checkTieConditions();
-      //  }
-    //}
-
 
     //const players = [playerOne, playerTwo];
 
@@ -217,28 +206,32 @@ const gameController = (() => {
             square.addEventListener('click', () => {
                 const rowIndex = square.getAttribute("data-row");
                 const columnIndex = square.getAttribute("data-column");
-                //console.log(rowIndex);
-                //console.log(columnIndex);
+
                 if (board[rowIndex][columnIndex] === '') {
-                    //board[rowIndex][columnIndex] = playerOne.mark;
-                    //square.textContent = playerOne.mark;
+                    
                     board[rowIndex][columnIndex] = activePlayer.mark;
-                    //the issue that took me a long time to figure out is mistyping "==="
-                    //instead of "=" in the line above...
                     square.textContent = activePlayer.mark
+                    
                     //for checking if the board array updates after each move
                     let currentBoard = gameBoard.getBoard();
                     //console.table(currentBoard)
                     
                     checkWin();
-                    changeTurns();
-
-                    //had to include '&& winningMark(...)' otherwise
-                    //checkTie would alert 'it's a tie' after checkWin in the rare case
-                    //where the last available button makes you win
-                    if(!wonGame && winningMark === "") {
+                    if(!wonGame) {
                         checkTie();
                     }
+                    changeTurns();
+
+                    //will have to find a solution to stop "it's a tie"
+                    //in a rare case where the button that makes you win
+                    // is the last one
+                    //if(wonGame === false && winningMark === "") {
+                    //    checkTie();
+                    //}
+                    //if(!wonGame) {
+                    //    checkTie();
+                    //}
+                    
                     
                     square.disabled = true;
 
