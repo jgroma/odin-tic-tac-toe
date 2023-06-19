@@ -1,4 +1,6 @@
-const gameContainer = document.querySelector(".game-container")
+const gameContainer = document.querySelector(".game-container");
+const gameMessage = document.querySelector(".message");
+const squares = gameContainer.querySelectorAll('button');
 
 const gameBoard = (() => {
     //filled out manually for visibility for now
@@ -8,50 +10,67 @@ const gameBoard = (() => {
         ["", "", ""]
     ];
 
+
+    const winMessage = () => {
+        gameMessage.textContent = `${winningMark} won`;
+    }
+
+    const disableBtns = (squares) => {
+        squares.forEach(square => {
+            square.disabled = true;
+        })
+};
+
     //if marks are the same in one of the winning combinations "you won"
     const winConditions = (board) => {
         if (board.includes("")) {
             //do nothing
-            //console.log(board.includes())
         } else {
             //winnning horizontally
             if (board[0][0] != "" && board[0][0] == board[0][1] && board[0][1] == board[0][2]) {
                 winningMark = board[0][0]
                 wonGame = true;
-                //console.log(wonGame);
-                //console.log(`The winning mark is ${winningMark}`);
-                alert(`${winningMark} won`)
+                winMessage()
+                //disableBtns()
+                //alert(`${winningMark} won`)
 
             } else if (board[1][0] != "" && board[1][0] == board[1][1] && board[1][1] == board[1][2]) {
                 winningMark = board[1][0]
                 wonGame = true;
-                alert(`${winningMark} won`)
+                winMessage()
+                //alert(`${winningMark} won`)
             } else if (board[2][0] != "" && board[2][0] == board[2][1] && board[2][1] == board[2][2]) {
                 winningMark = board[2][0]
                 wonGame = true;
-                alert(`${winningMark} won`)
+                winMessage()
+                //alert(`${winningMark} won`)
             //winning vertically
             } else if (board[0][0] != "" && board[0][0] == board[1][0] && board[1][0] == board[2][0]) {
                 winningMark = board[0][0]
                 wonGame = true;
-                alert(`${winningMark} won`)
+                winMessage()
+                //alert(`${winningMark} won`)
             } else if (board[0][1] != "" && board[0][1] == board[1][1] && board[1][1] == board[2][1]) {
                 winningMark = board[0][1]
                 wonGame = true;
-                alert(`${winningMark} won`)
+                winMessage()
+                //alert(`${winningMark} won`)
             } else if (board[0][2] != "" && board[0][2] == board[1][2] && board[1][2] == board[2][2]) {
                 winningMark = board[0][2]
                 wonGame = true;
-                alert(`${winningMark} won`)
+                winMessage()
+                //alert(`${winningMark} won`)
             //winning diagonally
             } else if (board[0][0] != "" && board[0][0] == board[1][1] && board[1][1] == board[2][2]) {
                 winningMark = board[0][0]
                 wonGame = true;
-                alert(`${winningMark} won`)
+                winMessage()
+                //alert(`${winningMark} won`)
             } else if (board[2][0] != "" && board[2][0] == board[1][1] && board[1][1] == board[0][2]) {
                 winningMark = board[2][0]
                 wonGame = true;
-                alert(`${winningMark} won`)
+                winMessage()
+                //alert(`${winningMark} won`)
             }
         }
     }
@@ -84,7 +103,8 @@ const gameBoard = (() => {
 
             if (tieArray.length === 9) {
                 isTie = true;
-                alert("it's a tie");
+                gameMessage.textContent = "It's a tie"
+                //alert("it's a tie");
             } else {
                 //do nothing
             }
@@ -132,35 +152,11 @@ const gameBoard = (() => {
 
 gameBoard.renderBoard()
 
-//const Player = (name, mark, playerTurn) => {
- //   return { name, mark, playerTurn};
-//}
-
-//const playerOne = Player('player1', 'x', 1);
-
-//const playerTwo = Player('player2', 'o', 0)
-
-//const players = [playerOne, playerTwo];
-
-//playerOneName = "playerOne"
-//playerTwoName = "playerTwo"
-
-//const players = [
-   // {
-   //     name: playerOneName,
-   //     mark: 'x'
-   // },
-   // {
-    //    name: playerTwoName,
-   //     mark: 'o'
-   // }
-//];
-
 
 const gameController = (() => {
     
 
-    const board = gameBoard.getBoard();
+    let board = gameBoard.getBoard();
 
 //will be used to announce the winner
     let wonGame = false;
@@ -200,8 +196,29 @@ const gameController = (() => {
         }
     };
 
+//to fix
+const gameCommentary = () => {
+    gameMessage.innerHTML = `It's ${activePlayer.name}'s turn`
+    //winningMark;
+
+    if (winningMark == "x" || winningMark == "o") {
+        gameMessage.innerHTML = `Player ${winningMark} won.`
+    } else {
+        //do nothing
+    }
+}
+
+//need to fix this
+const disableBtns = (squares) => {
+    squares.forEach(square => {
+        square.disabled = wonGame;
+    })
+}
+
+//const squares = gameContainer.querySelectorAll('button');
+const squares = gameContainer.querySelectorAll('button');
+
     const addMark = () => {
-        const squares = gameContainer.querySelectorAll('button');
         squares.forEach(square => {
             square.addEventListener('click', () => {
                 const rowIndex = square.getAttribute("data-row");
@@ -220,6 +237,9 @@ const gameController = (() => {
                     if(!wonGame) {
                         checkTie();
                     }
+
+                    disableBtns(squares)
+                    //gameCommentary();
                     changeTurns();
 
                     //will have to find a solution to stop "it's a tie"
@@ -231,6 +251,7 @@ const gameController = (() => {
                     //if(!wonGame) {
                     //    checkTie();
                     //}
+                    //console.log(board)
                     
                     
                     square.disabled = true;
@@ -243,11 +264,40 @@ const gameController = (() => {
     };
 
 
+//reset game
+
+const resetBtn = document.querySelector(".reset");
+
+const resetGame = () => {
+    resetBtn.addEventListener("click", () => {
+        board = [
+            ["", "", ""],
+            ["", "", ""],
+            ["", "", ""]
+        ];
+
+        squares.forEach(square => {
+            square.textContent = ""
+            square.disabled = false;
+        })
+
+        gameMessage.textContent = "";
+
+        activePlayer = players[0];
+        wonGame = false;
+        winningMark = "";
+        isTie = "";
+
+    })
+}
 
     return {
-        addMark
+        addMark,
+        resetGame
     }
 
 })();
 
+//gameController.gameCommentary()
 gameController.addMark()
+gameController.resetGame()

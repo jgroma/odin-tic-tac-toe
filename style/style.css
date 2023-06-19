@@ -1,7 +1,14 @@
 body {
     display: flex;
     justify-content: center;
+    align-items: center;
     height: 100vh;
+}
+
+.main-container {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
 }
 
 .game-container {
@@ -17,4 +24,23 @@ button {
     width: 100px;
     height: 100px;
     border: 1px solid black;
+}
+
+.reset {
+    width: 8em;
+    height: 4em;
+    align-self: center;
+}
+
+/*.main-container::before {
+    content: "X's turn.";
+    align-self: center;
+}
+
+.main-container::after {
+    content: "lii";
+}*/
+
+.message {
+    align-self: center;
 }
