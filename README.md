@@ -5,5 +5,6 @@ This is a project from the [The Odin Project](https://www.theodinproject.com/les
 The aim of this assignment is to create a Tic Tac Toe game using the factory functions and the module pattern.
 
 #TO-DO:
--game UI  
+<br>
+-fix player win annoucment message  
 -CSS styling

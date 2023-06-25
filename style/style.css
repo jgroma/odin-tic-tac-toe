@@ -6,9 +6,11 @@ body {
 }
 
 .main-container {
-    display: flex;
+    display: none;
+    /*display: flex;*/
     flex-direction: column;
     gap: 40px;
+    position: relative;
 }
 
 .game-container {
@@ -26,7 +28,7 @@ button {
     border: 1px solid black;
 }
 
-.reset {
+#reset, #start {
     width: 8em;
     height: 4em;
     align-self: center;
@@ -43,4 +45,28 @@ button {
 
 .message {
     align-self: center;
+}
+
+#start-container {
+    position: fixed;
+    /*display: none;*/
+    background-color: bisque;
+    width: 200px;
+    height: 200px;
+    padding: 2em;
+    border: 2px solid brown;
+    
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    justify-content: space-between;
+}
+
+.players {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
 }

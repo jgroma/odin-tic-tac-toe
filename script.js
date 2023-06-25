@@ -10,6 +10,9 @@ const gameBoard = (() => {
         ["", "", ""]
     ];
 
+    //let players = gameController.getPlayers()
+
+    //const winnerPlayer = players.find(winner => winner.mark === winningMark)
 
     const winMessage = () => {
         gameMessage.textContent = `${winningMark} won`;
@@ -172,19 +175,24 @@ const gameController = (() => {
 
     //const players = [playerOne, playerTwo];
 
-    playerOneName = "playerOne"
-    playerTwoName = "playerTwo"
+    //playerOneName = "playerOne"
+    //playerTwoName = "playerTwo"
+
+    let playerOneName;
+    let playerTwoName;
 
     const players = [
        {
-        name: playerOneName,
+        name: playerOneName || "Player One",
         mark: 'x'
       },
       {
-        name: playerTwoName,
+        name: playerTwoName || "Player Two",
         mark: 'o'
       }
    ];
+
+   const getPlayers = () => players;
 
     let activePlayer = players[0];
 
@@ -195,6 +203,16 @@ const gameController = (() => {
             activePlayer = players[0]
         }
     };
+
+    const whichWon = (winningMark) => {
+        if (winningMark == "x") {
+            console.log(`${players[0].name} has won`)
+        } else if (winningMark == "o") {
+            console.log(`${players[1].name} has won`)
+        } else {
+            console.log("Keep playing")
+        }
+    }
 
 //to fix
 const gameCommentary = () => {
@@ -215,8 +233,78 @@ const disableBtns = (squares) => {
     })
 }
 
+//FORM DATA
+const formContainer = document.getElementById('start-container');
+const form = document.getElementsByTagName('form');
+const startBtn = document.getElementById('start');
+
+function getPlayerNames () {
+
+    playerOne = document.getElementById('playerone').value
+    playerTwo = document.getElementById('playertwo').value
+
+    if (playerOne != "" && playerTwo != "") {
+        players[0].name = playerOne;
+        players[1].name = playerTwo;
+    } else {
+        players[0].name = "Player One";
+        players[1].name = "Player Two";
+    }
+}
+
+function hideForm () {
+    formContainer.style.display = "none";
+}
+
+const mainContainer = document.querySelector('.main-container');
+
+const startGame = () => {
+    
+    startBtn.addEventListener("click", function() {
+        //stop form submission
+        event.preventDefault();
+
+        mainContainer.style.display = "flex"
+        getPlayerNames()
+        console.log(players)
+        //console.log(playerOneName)
+        //console.log(playerTwoName)
+        resetGame()
+        hideForm()
+    });
+}
+
+
 //const squares = gameContainer.querySelectorAll('button');
 const squares = gameContainer.querySelectorAll('button');
+
+//reset game
+
+const resetBtn = document.getElementById("reset");
+
+const resetGame = () => {
+    resetBtn.addEventListener("click", () => {
+        board = [
+            ["", "", ""],
+            ["", "", ""],
+            ["", "", ""]
+        ];
+
+        squares.forEach(square => {
+            square.textContent = ""
+            square.disabled = false;
+        })
+
+        gameMessage.textContent = "";
+
+        activePlayer = players[0];
+        wonGame = false;
+        winningMark = "";
+        isTie = "";
+
+    })
+}
+
 
     const addMark = () => {
         squares.forEach(square => {
@@ -234,6 +322,7 @@ const squares = gameContainer.querySelectorAll('button');
                     //console.table(currentBoard)
                     
                     checkWin();
+                    whichWon(winningMark);
                     if(!wonGame) {
                         checkTie();
                     }
@@ -264,40 +353,16 @@ const squares = gameContainer.querySelectorAll('button');
     };
 
 
-//reset game
-
-const resetBtn = document.querySelector(".reset");
-
-const resetGame = () => {
-    resetBtn.addEventListener("click", () => {
-        board = [
-            ["", "", ""],
-            ["", "", ""],
-            ["", "", ""]
-        ];
-
-        squares.forEach(square => {
-            square.textContent = ""
-            square.disabled = false;
-        })
-
-        gameMessage.textContent = "";
-
-        activePlayer = players[0];
-        wonGame = false;
-        winningMark = "";
-        isTie = "";
-
-    })
-}
-
     return {
         addMark,
-        resetGame
+        //resetGame,
+        startGame,
+        getPlayers
     }
 
 })();
 
 //gameController.gameCommentary()
 gameController.addMark()
-gameController.resetGame()
+//gameController.resetGame()
+gameController.startGame()

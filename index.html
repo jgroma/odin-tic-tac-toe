@@ -12,7 +12,23 @@
     <div class ="main-container">
         <p class="message"></p>
         <div class="game-container"></div>
-        <button class="reset">Reset</button>
+        <button id="reset">Reset</button>
+    </div>
+    <!--POP-UP FORM-->
+    <div id="start-container">
+        <form action="https://httpbin.org/post" method="post">
+            <div class="players">
+                <p class="player one">
+                    <label for="playerone">Player 1</label>
+                    <input type="text" id="playerone" name="playerone">
+                </p>
+                <p class="player two">
+                    <label for="playertwo">Player 2</label>
+                    <input type="text" id="playertwo" name="playertwo">
+                </p>
+            </div>
+            <button id="start">Start</button>
+        </form>
     </div>
    
     <script src="script.js"></script>
