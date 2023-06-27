@@ -1,8 +1,23 @@
+
+:root {
+    --bg-color: rgb(20, 18, 36);
+    --form-bg-color: rgb(20, 18, 36);;
+    --form-border-color: rgb(208, 219, 107);
+    --btn-border: rgb(208, 219, 107);
+    --board-color: rgb(20, 18, 36);;
+    --board-border-color: #fff;
+    --x-color: rgb(69, 108, 212);
+    --x-lighter: rgb(162, 228, 240);
+    --o-color: rgb(226, 55, 55);
+    --o-lighter: rgb(233, 149, 149);
+}
+
 body {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
+    background-color: var(--bg-color);
 }
 
 .main-container {
@@ -19,7 +34,53 @@ body {
     display: flex;
     flex-wrap: wrap;
     align-self: center;
-    border: 1px solid black;
+    background-color: var(--board-color);
+    border: 1px solid var(--board-border-color);
+}
+
+.square-style {
+    font-size: 2rem;
+
+}
+
+.x {
+    color: #fff;
+    text-shadow:
+      0 0 3px var(--x-lighter),
+      0 0 5px var(--x-lighter),
+      0 0 10px var(--x-lighter),
+      0 0 14px var(--x-color),
+      0 0 20px var(--x-color),
+      0 0 20px var(--x-color),
+      0 0 25px var(--x-color),
+      0 0 34px var(--x-color);
+
+}
+
+.o {
+    color: #fff;
+    text-shadow:
+      0 0 3px var(--o-lighter),
+      0 0 5px var(--o-lighter),
+      0 0 10px var(--o-lighter),
+      0 0 14px var(--o-color),
+      0 0 20px var(--o-color),
+      0 0 20px var(--o-color),
+      0 0 25px var(--o-color),
+      0 0 34px var(--o-color);
+}
+
+.tie {
+    color: #fff;
+    text-shadow:
+      0 0 6px #fff,
+      0 0 10px #fff,
+      0 0 20px #fff,
+      0 0 30px var(--btn-border),
+      0 0 50px var(--btn-border),
+      0 0 60px var(--btn-border),
+      0 0 60px var(--btn-border),
+      0 0 80px var(--btn-border);
 }
 
 button {
@@ -32,31 +93,70 @@ button {
     width: 8em;
     height: 4em;
     align-self: center;
+    border: 1px solid var(--bg-color);
+    background-color: var(--bg-color);
+
+    color: #fff;
+  text-shadow:
+      0 0 7px #fff,
+      0 0 10px #fff,
+      0 0 21px #fff,
+      0 0 42px var(--btn-border),
+      0 0 82px var(--btn-border),
+      0 0 92px var(--btn-border),
+      0 0 102px var(--btn-border),
+      0 0 151px var(--btn-border);
+      
+   font-size: 1.2rem;
+  animation: flicker 1.5s infinite alternate;
 }
 
-/*.main-container::before {
-    content: "X's turn.";
-    align-self: center;
+
+
+/* Flickering animation */
+@keyframes flicker {
+    
+  0%, 18%, 22%, 25%, 53%, 57%, 100% {
+
+      text-shadow:
+      0 0 4px #fff,
+      0 0 11px #fff,
+      0 0 19px #fff,
+      0 0 40px var(--btn-border),
+      0 0 80px var(--btn-border),
+      0 0 90px var(--btn-border),
+      0 0 100px var(--btn-border),
+      0 0 150px var(--btn-border);
+  }
+  
+  20%, 24%, 55% {        
+      text-shadow: none;
+  }    
 }
 
-.main-container::after {
-    content: "lii";
-}*/
 
 .message {
     align-self: center;
+    font-size: 2em;
 }
 
 #start-container {
     position: fixed;
     /*display: none;*/
-    background-color: bisque;
     width: 200px;
     height: 200px;
     padding: 2em;
-    border: 2px solid brown;
-    
+    background-color: var(--form-bg-color);
+    border-radius: 10px;
+
+    box-shadow: 0 0 .1rem #fff,
+    0 0 .1rem #fff,
+    0 0 1rem var(--form-border-color),
+    0 0 0.4rem var(--form-border-color),
+    0 0 1.4rem var(--form-border-color);
+    inset 0 0 0.7rem var(--form-border-color);
 }
+    
 
 form {
     display: flex;
@@ -69,4 +169,5 @@ form {
     display: flex;
     flex-direction: column;
     gap: 30px;
+    color: aliceblue;
 }

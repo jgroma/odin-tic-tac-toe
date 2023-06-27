@@ -6,5 +6,5 @@ The aim of this assignment is to create a Tic Tac Toe game using the factory fun
 
 #TO-DO:
 <br>
--fix player win annoucment message  
--CSS styling
+-display player name in the win message  
+-fix bug that displays "it's a tie" in the rare case when the last spot available on the board is the winning move
